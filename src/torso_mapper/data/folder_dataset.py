@@ -53,33 +53,29 @@ class FolderCTScanIterableDataset(IterableDataset):
             depth, height, width = volume.shape
             start_offset = 64 - self.stride
 
-            for start in range(-start_offset, depth+self.stride, self.stride):
+            for start in range(-start_offset, depth, self.stride):
                 block = np.zeros((64, 64, 64), dtype=volume.dtype)
 
                 vol_start = max(0, start)
-                block_start = max(0, -start)
-                block_end = min(64, depth - start + block_start)
 
-                if vol_start < depth and block_start < block_end:
+                volume_slice = volume[vol_start:vol_start + 64, :, :]
+                volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
+                if volume_slice.std() != 0:
+                    volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
+                else:
+                    volume_slice = (volume_slice - volume_slice.mean())
 
-                    volume_slice = volume[vol_start:vol_start + (block_end - block_start), :, :]
-                    volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
-                    if volume_slice.std() != 0:
-                        volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
-                    else:
-                        volume_slice = (volume_slice - volume_slice.mean())
+                # Get the actual dimensions of the volume slice
+                d, h, w = volume_slice.shape
 
-                    # Get the actual dimensions of the volume slice
-                    copy_depth = min(block_end - block_start, volume_slice.shape[0])
+                # Copy the volume slice into the block, handling potential size mismatches
+                block[:d, 
+                    :h, 
+                    :w] = volume_slice
+                
+                block = np.expand_dims(block, axis=0)
 
-                    # Copy the volume slice into the block, handling potential size mismatches
-                    block[block_start:block_end, 
-                        :height, 
-                        :width] = volume_slice[:copy_depth]
-                    
-                    block = np.expand_dims(block, axis=0)
-
-                    yield block, path
+                yield block, path
 
 def create_folder_ct_dataloader(
     folder_path: str,
