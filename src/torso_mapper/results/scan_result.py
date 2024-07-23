@@ -33,6 +33,6 @@ class TorsoScanResult:
     def get_scan_label_sum(self) -> np.ndarray:
         return self.get_scan_labels().sum(axis=0)
     
-    def get_scan_robust_labels(self, top_k=2) -> np.ndarray:
+    def get_scan_robust_labels(self, top_k=2, treshold=0.5) -> np.ndarray:
         top_k = min(top_k, self.scan_logits.shape[0])
-        return (torch.mean(torch.topk(torch.sigmoid(self.scan_logits), k=top_k, dim=0).values, dim=0) > 0.5).int().numpy()
+        return (torch.mean(torch.topk(torch.sigmoid(self.scan_logits), k=top_k, dim=0).values, dim=0) > treshold).int().numpy()
