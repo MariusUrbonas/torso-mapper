@@ -34,10 +34,10 @@ class CTScanIterableDataset(IterableDataset):
             depth, height, width = volume.shape
 
             # Start 64 - stride slices above the volume
-            start_offset = 64 - self.stride
+            start_offset = self.stride
 
             for start in range(
-                -start_offset, depth + self.stride, self.stride
+                -start_offset, depth, self.stride
             ):
                 block = np.zeros((64, 64, 64), dtype=volume.dtype)
 
