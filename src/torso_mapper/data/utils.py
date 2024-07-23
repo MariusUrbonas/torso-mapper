@@ -52,6 +52,22 @@ def respace_nifty(img, voxel_spacing=(1, 1, 1), order=3):
             ]
         ).astype(int)
     )
-    new_aff = nib.affines.rescale_affine(aff, shp, voxel_spacing, new_shp)
+    new_aff = rescale_affine(aff, shp, voxel_spacing, new_shp)
     new_img = nip.resample_from_to(img, (new_shp, new_aff), order=order, cval=-1024)
     return new_img
+
+
+def rescale_affine(affine, shape, zooms, new_shape=None):
+    """
+    Taken from https://github.com/nipy/nibabel/blob/master/nibabel/affines.py due to incopatability in nibabel==5.2.1 and numpy>2.^ 
+    """
+    shape = np.asarray(shape)
+    new_shape = np.array(new_shape if new_shape is not None else shape)
+
+    s = nib.affines.voxel_sizes(affine)
+    rzs_out = affine[:3, :3] * zooms / s
+
+    # Using xyz = A @ ijk, determine translation
+    centroid = nib.affines.apply_affine(affine, (shape - 1) // 2)
+    t_out = centroid - rzs_out @ ((new_shape - 1) // 2)
+    return nib.affines.from_matvec(rzs_out, t_out)
