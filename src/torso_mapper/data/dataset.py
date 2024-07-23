@@ -29,15 +29,15 @@ class CTScanIterableDataset(IterableDataset):
             num_workers = worker_info.num_workers
             worker_id = worker_info.id
 
-        for vol_idx, volume in enumerate(self.volumes):
-            volume = scan_np = auto_trim_ct_scan(volume)
+        for vol_idx, volume in enumerate(worker_id, self.volumes, num_workers):
+            volume = auto_trim_ct_scan(volume)
             depth = volume.shape[0]
 
             # Start 64 - stride slices above the volume
             start_offset = 64 - self.stride
 
             for start in range(
-                worker_id * self.stride - start_offset, depth, self.stride * num_workers
+                worker_id * self.stride - start_offset, depth, self.stride
             ):
                 block = np.zeros((64, 64, 64), dtype=volume.dtype)
 

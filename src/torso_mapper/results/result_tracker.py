@@ -1,3 +1,4 @@
+from typing import Union
 import torch
 import numpy as np
 
@@ -7,7 +8,7 @@ class ResultTracker:
     def __init__(self):
         self.result_map = {}
 
-    def update(self, logits, vol_indices):
+    def update(self, logits, ids):
         """
         Update the result tracker with a new batch of results.
 
@@ -19,13 +20,16 @@ class ResultTracker:
         logits = logits.detach().cpu()
 
         # Update log probability sums and block counts for each volume
-        for block_log_prob, vol_idx in zip(logits, vol_indices.cpu().numpy()):
-            if vol_idx not in self.result_map:
-                self.result_map[vol_idx] = TorsoScanResult()
-            self.result_map[vol_idx].update(block_log_prob)
+        for block_log_prob, vol_id in zip(logits, ids.cpu()):
+            if vol_id not in self.result_map:
+                self.result_map[vol_id] = TorsoScanResult(id=vol_id)
+            self.result_map[vol_id].update(block_log_prob)
+    
+    def get_scan_result_at(self, id: Union[str, int]):
+        return self.result_map[id]
 
-    def get_scan_result(self, volume_idx: int):
-        return self.result_map[volume_idx]
+    def get_scan_result_at(self, idx: int):
+        return self.get_scan_result_list[idx]
     
     def get_scan_result_list(self):
         return list(self.result_map.values())

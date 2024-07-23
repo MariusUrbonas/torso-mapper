@@ -1,3 +1,4 @@
+from typing import Union
 import torch
 import numpy as np
 
@@ -9,8 +10,9 @@ class TorsoScanResult:
             'L1', 'L2', 'L3', 'L4', 'L5'
         ]
 
-    def __init__(self):
+    def __init__(self, id: Union[str, int]):
         self.scan_logits = None
+        self.id = id
 
     def update(self, logits):
         """
