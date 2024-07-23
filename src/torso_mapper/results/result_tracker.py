@@ -29,7 +29,7 @@ class ResultTracker:
         return self.result_map[id]
 
     def get_scan_result_at(self, idx: int):
-        return self.get_scan_result_list[idx]
+        return self.get_scan_result_list()[idx]
     
     def get_scan_result_list(self):
         return list(self.result_map.values())

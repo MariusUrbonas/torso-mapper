@@ -64,7 +64,10 @@ class FolderCTScanIterableDataset(IterableDataset):
 
                     volume_slice = volume[vol_start:vol_start + (block_end - block_start), :, :]
                     volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
-                    volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
+                    if volume_slice.std() != 0:
+                        volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
+                    else:
+                        volume_slice = (volume_slice - volume_slice.mean())
 
                     # Get the actual dimensions of the volume slice
                     _, slice_height, slice_width = volume_slice.shape
