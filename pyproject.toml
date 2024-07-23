@@ -8,8 +8,32 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+torch = "^2.3.1"
+transformers = "^4.42.4"
+nibabel = "^5.2.1"
+scipy = "^1.14.0"
+pytest = "^8.3.3"
+click = "^8.1.7"
 
 [tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^5.0.0"
+pytest-json-report = "^1.5.0"
+
+[tool.pytest.ini_options]
+addopts = "--cov=torso_mapper --cov-report=term-missing --cov-report=xml"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["torso_mapper"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.poetry.scripts]
+torso-mapper = "torso_mapper.cli:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
