@@ -31,7 +31,7 @@ class FolderCTScanIterableDataset(IterableDataset):
         """Load and process a single .nii file."""
         scan_nifty = nib.load(file_path)
         scan_nifty = reorient_nifty(scan_nifty, axcodes_to=("I", "P", "R"))
-        scan_nifty = respace_nifty(scan_nifty, voxel_spacing=(4, 4, 4))
+        scan_nifty = respace_nifty(scan_nifty, voxel_spacing=(4, 4, 4), order=3)
         scan_np = scan_nifty.get_fdata()
         scan_np = auto_trim_ct_scan(scan_np)
         return scan_np

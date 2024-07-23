@@ -20,7 +20,7 @@ class ResultTracker:
         logits = logits.detach().cpu()
 
         # Update log probability sums and block counts for each volume
-        for block_log_prob, vol_id in zip(logits, ids.cpu()):
+        for block_log_prob, vol_id in zip(logits, ids):
             if vol_id not in self.result_map:
                 self.result_map[vol_id] = TorsoScanResult(id=vol_id)
             self.result_map[vol_id].update(block_log_prob)
