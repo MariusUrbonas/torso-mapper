@@ -1,1 +1,1 @@
-from torso_mapper import torso_mapper
+from torso_mapper import cli

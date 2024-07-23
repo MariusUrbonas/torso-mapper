@@ -8,6 +8,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+torch = "^2.3.1"
+transformers = "^4.42.4"
+nibabel = "^5.2.1"
+scipy = "^1.14.0"
 
 [tool.poetry.dev-dependencies]
 
