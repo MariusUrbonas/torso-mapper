@@ -31,7 +31,7 @@ class CTScanIterableDataset(IterableDataset):
 
         for vol_idx, volume in enumerate(worker_id, self.volumes, num_workers):
             volume = auto_trim_ct_scan(volume)
-            depth = volume.shape[0]
+            depth, height, width = volume.shape
 
             # Start 64 - stride slices above the volume
             start_offset = 64 - self.stride
@@ -60,12 +60,12 @@ class CTScanIterableDataset(IterableDataset):
                         volume_slice = (volume_slice - volume_slice.mean())
 
                     # Get the actual dimensions of the volume slice
-                    _, slice_height, slice_width = volume_slice.shape
+                    copy_depth = min(block_end - block_start, volume_slice.shape[0])
 
                     # Copy the volume slice into the block, handling potential size mismatches
                     block[block_start:block_end, 
-                        :slice_height, 
-                        :slice_width] = volume_slice
+                        :height, 
+                        :width] = volume_slice[:copy_depth]
 
                     # The channel dimention
                     block = np.expand_dims(block, axis=0)

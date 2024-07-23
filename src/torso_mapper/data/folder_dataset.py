@@ -50,7 +50,7 @@ class FolderCTScanIterableDataset(IterableDataset):
 
         for path in worker_file_paths:
             volume = self._load_and_process_scan(path)
-            depth = volume.shape[0]
+            depth, height, width = volume.shape
             start_offset = 64 - self.stride
 
             for start in range(-start_offset, depth+self.stride, self.stride):
@@ -70,12 +70,12 @@ class FolderCTScanIterableDataset(IterableDataset):
                         volume_slice = (volume_slice - volume_slice.mean())
 
                     # Get the actual dimensions of the volume slice
-                    _, slice_height, slice_width = volume_slice.shape
+                    copy_depth = min(block_end - block_start, volume_slice.shape[0])
 
                     # Copy the volume slice into the block, handling potential size mismatches
                     block[block_start:block_end, 
-                        :slice_height, 
-                        :slice_width] = volume_slice
+                        :height, 
+                        :width] = volume_slice[:copy_depth]
                     
                     block = np.expand_dims(block, axis=0)
 
