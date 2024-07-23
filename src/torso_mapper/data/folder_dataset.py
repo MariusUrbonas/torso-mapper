@@ -60,21 +60,23 @@ class FolderCTScanIterableDataset(IterableDataset):
                 block_start = max(0, -start)
                 block_end = min(64, depth - start + block_start)
 
-                volume_slice = volume[vol_start:vol_start + (block_end - block_start), :, :]
-                volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
-                volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
+                if vol_start < depth and block_start < block_end:
 
-                # Get the actual dimensions of the volume slice
-                _, slice_height, slice_width = volume_slice.shape
+                    volume_slice = volume[vol_start:vol_start + (block_end - block_start), :, :]
+                    volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
+                    volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
 
-                # Copy the volume slice into the block, handling potential size mismatches
-                block[block_start:block_end, 
-                    :slice_height, 
-                    :slice_width] = volume_slice
-                
-                block = np.expand_dims(block, axis=0)
+                    # Get the actual dimensions of the volume slice
+                    _, slice_height, slice_width = volume_slice.shape
 
-                yield block, path
+                    # Copy the volume slice into the block, handling potential size mismatches
+                    block[block_start:block_end, 
+                        :slice_height, 
+                        :slice_width] = volume_slice
+                    
+                    block = np.expand_dims(block, axis=0)
+
+                    yield block, path
 
 def create_folder_ct_dataloader(
     folder_path: str,

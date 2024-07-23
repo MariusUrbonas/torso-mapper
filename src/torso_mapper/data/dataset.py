@@ -48,25 +48,26 @@ class CTScanIterableDataset(IterableDataset):
                 # Fill the block with available data from the volume
                 block_end = min(64, depth - start + block_start)
 
-                # Standardise the volume slice so that the values are roughly in the same scale and distribution across blocks
-                volume_slice = volume[
-                    vol_start : vol_start + (block_end - block_start), :, :
-                ]
-                volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
-                volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
+                if vol_start < depth and block_start < block_end:
+                    # Standardise the volume slice so that the values are roughly in the same scale and distribution across blocks
+                    volume_slice = volume[
+                        vol_start : vol_start + (block_end - block_start), :, :
+                    ]
+                    volume_slice = np.clip(volume_slice, a_min=-1024, a_max=8192)
+                    volume_slice = (volume_slice - volume_slice.mean()) / volume_slice.std()
 
-                # Get the actual dimensions of the volume slice
-                _, slice_height, slice_width = volume_slice.shape
+                    # Get the actual dimensions of the volume slice
+                    _, slice_height, slice_width = volume_slice.shape
 
-                # Copy the volume slice into the block, handling potential size mismatches
-                block[block_start:block_end, 
-                    :slice_height, 
-                    :slice_width] = volume_slice
+                    # Copy the volume slice into the block, handling potential size mismatches
+                    block[block_start:block_end, 
+                        :slice_height, 
+                        :slice_width] = volume_slice
 
-                # The channel dimention
-                block = np.expand_dims(block, axis=0)
+                    # The channel dimention
+                    block = np.expand_dims(block, axis=0)
 
-                yield block, vol_idx
+                    yield block, vol_idx
 
 
 def create_ct_dataloader(
