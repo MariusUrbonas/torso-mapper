@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "torso_mapper"
-version = "1.0.0"
+version = "1.0.1"
 description = "A package for quickly identifying part of the torso imaged an CT scan throught visible vertebrae"
 authors = ["Marius Urbonas"]
 license = "MIT"
