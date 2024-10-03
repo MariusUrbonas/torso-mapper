@@ -38,5 +38,10 @@ def filter_scans(input_dir, model, vertebrae, batch_size, num_workers, device, o
 
     click.echo(f"Analysis complete. Results saved to {output}")
 
-if __name__ == '__main__':
+
+def main():
     filter_scans()
+    
+
+if __name__ == '__main__':
+    main()
