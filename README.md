@@ -1,5 +1,5 @@
 # torso mapper
-![Tests](https://github.com/MariusUrbonas/torso-mapper/actions/workflows/ci_cd.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MariusUrbonas/torso-mapper/badge.svg?branch=main)](https://coveralls.io/github/MariusUrbonas/torso-mapper?branch=main) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PyPI version](https://badge.fury.io/py/your-package-name.svg)](https://badge.fury.io/py/your-package-name) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+![Tests](https://github.com/MariusUrbonas/torso-mapper/actions/workflows/ci_cd.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MariusUrbonas/torso-mapper/badge.svg?branch=main)](https://coveralls.io/github/MariusUrbonas/torso-mapper?branch=main) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PyPI version](https://badge.fury.io/py/torso_mapper.svg)](https://badge.fury.io/py/torso_mapper) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 A Python package for quickly identifying parts of the torso imaged in CT scans through visible vertebrae detection.
 
