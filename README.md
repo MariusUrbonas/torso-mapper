@@ -5,7 +5,7 @@ A Python package for quickly identifying parts of the torso imaged in CT scans t
 
 ## Description
 
-`torso_mapper` is a powerful tool designed to analyze CT scan volumes and identify visible vertebrae. It uses deep learning to process 3D medical imaging data. This package is particularly useful for medical professionals and researchers working with CT scans of the torso region.
+`torso-mapper` is a powerful tool designed to analyze CT scan volumes and identify visible vertebrae. It uses deep learning to process 3D medical imaging data. This package is particularly useful for medical professionals and researchers working with CT scans of the torso region.
 
 ## Features
 
@@ -18,18 +18,18 @@ A Python package for quickly identifying parts of the torso imaged in CT scans t
 
 ## Installation
 
-You can install `torso_mapper` using pip:
+You can install `torso-mapper` using pip:
 
 ```bash
-pip install torso_mapper
+pip install torso-mapper
 ```
 
 ## CLI Usage
 
-The `torso_mapper` package provides a command-line interface for analyzing CT scans. Here's how to use it:
+The `torso-mapper` package provides a command-line interface for analyzing CT scans. Here's how to use it:
 
 ```bash
-torso_mapper filter-scans --input-dir <path_to_scans> --vertebrae <vertebra1> --vertebrae <vertebra2> [OPTIONS]
+torso-mapper --input-dir <path_to_scans> --vertebrae <vertebra1> --vertebrae <vertebra2> [OPTIONS]
 ```
 
 Arguments:
@@ -45,14 +45,14 @@ Options:
 
 Example:
 ```bash
-torso_mapper filter-scans --input-dir ./ct_scans --vertebrae T1 --vertebrae T2 --vertebrae L1 --output results.json
+torso-mapper --input-dir ./ct_scans --vertebrae T11 --vertebrae T12 --vertebrae L1 --output results.json
 ```
 
 This command will analyze the CT scans in the `./ct_scans` directory, looking for vertebrae T1, T2, and L1, and save the results to `results.json`.
 
 ## Specifiable Vertebrae
 
-The `torso_mapper` can detect the following vertebrae:
+The `torso-mapper` can detect the following vertebrae:
 
 - Cervical (C1-C7): Detected as a group due to their proximity
 - Thoracic (T1-T12): Individually detectable
@@ -68,7 +68,7 @@ Note: For cervical vertebrae (C1-C7), which are located in the neck region, the 
 
 Example usage:
 ```bash
-torso_mapper filter-scans --input-dir ./ct_scans --vertebrae C --vertebrae T1 --vertebrae T12 --vertebrae L5
+torso-mapper --input-dir ./ct_scans --vertebrae T11 --vertebrae T12 --vertebrae L1 --vertebrae L2
 ```
 
 This command will look for the presence of any cervical vertebrae, as well as the specific thoracic vertebrae T1 and T12, and the lumbar vertebra L5.
@@ -76,7 +76,7 @@ This command will look for the presence of any cervical vertebrae, as well as th
 In your Python code, you can specify vertebrae in the same way:
 
 ```python
-target_vertebrae = ['C', 'T1', 'T12', 'L5']
+target_vertebrae = ['T11', 'T12', 'L1']
 results = analyze_vertebrae(dataloader, model, target_vertebrae, device='cpu')
 ```
 
@@ -84,7 +84,7 @@ Remember that when 'C' is specified, the results will indicate the presence or a
 
 ## API Usage
 
-Here's a detailed example of how to use the `torso_mapper` API:
+Here's a detailed example of how to use the `torso-mapper` API:
 
 ```python
 from torso_mapper.data import create_folder_ct_dataloader
@@ -98,7 +98,7 @@ dataloader = create_folder_ct_dataloader("path/to/ct_scans", batch_size=4)
 model = TorsoNet.from_pretrained("marius-urbonas/torso-mapper")
 
 # Specify the vertebrae you want to detect
-target_vertebrae = ['T1', 'T2', 'L1']
+target_vertebrae = ['T11', 'T12', 'L1']
 
 # Analyze the CT scans
 results = analyze_vertebrae(dataloader, model, target_vertebrae, device='cpu')
@@ -116,14 +116,14 @@ for scan_id, scan_results in results.items():
 This script will:
 1. Load CT scans from a specified directory
 2. Use the pre-trained TorsoNet model
-3. Analyze the scans for the presence of T1, T2, and L1 vertebrae
+3. Analyze the scans for the presence of T11, T12, and L1 vertebrae
 4. Print out detailed results for each scan
 
 You can adjust the `target_vertebrae` list to look for different vertebrae, and modify the processing of results as needed for your specific use case.
 
 ## API Usage for getting clasification labels
  
-Here's a basic example of how to use `torso_mapper`:
+Here's a basic example of how to use `torso-mapper`:
 
 ```python
 from torso_mapper.data import create_folder_ct_dataloader
@@ -165,7 +165,7 @@ Interested in contributing? We welcome contributions of all forms. Please check 
 
 ## License
 
-`torso_mapper` is licensed under the MIT License. See the LICENSE file for more details.
+`torso-mapper` is licensed under the MIT License. See the LICENSE file for more details.
 
 ## Credits
 
